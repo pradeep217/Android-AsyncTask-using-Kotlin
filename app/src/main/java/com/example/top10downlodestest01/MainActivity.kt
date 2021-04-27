@@ -7,10 +7,24 @@ import android.os.Bundle
 import android.util.Log
 import java.io.IOException
 import java.lang.Exception
-import java.lang.StringBuilder
-import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
+
+class FeedEntry{
+    var name:String =""
+    var artist:String =""
+    var releaseDate:String =""
+    var summary:String =""
+    var imageURL:String =""
+    override fun toString(): String {
+        return """
+            name = $name
+            artist= $artist
+            releaseData =$releaseDate
+            imageURL =$imageURL 
+              """.trimIndent()
+    }
+}
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
@@ -43,7 +57,9 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPostExecute(result: String) {
                 super.onPostExecute(result)
-                Log.d(TAG,"doInBackground:onPostExecute called $result")
+//                Log.d(TAG,"doInBackground:onPostExecute called $result")
+                var parseApplications =ParseApplications()
+                parseApplications.parse(result)
             }
 
             override fun onProgressUpdate(vararg values: Void?) {
@@ -52,16 +68,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             private fun downLodeXml(params: String?):String {
-                val xmlResult = StringBuilder()
+//                val xmlResult = StringBuilder()
 
                 try {
-                    val url = URL(params)
-                    val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                    val responce = connection.responseCode
-                    Log.d(TAG, "downLodeXml: Responce $responce")
-                    connection.inputStream.buffered().reader().use { xmlResult.append(it.readText()) }
-                    Log.d(TAG,"downLodeXml: received data from Rss ${xmlResult.length} bytes")
-                    return xmlResult.toString()
+//                    val url = URL(params)
+//                    val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+//                    val responce = connection.responseCode
+//                    Log.d(TAG, "downLodeXml: Responce $responce")
+//                    connection.inputStream.buffered().reader().use { xmlResult.append(it.readText()) }
+//                    Log.d(TAG,"downLodeXml: received data from Rss ${xmlResult.length} bytes")
+//                    return xmlResult.toString()
+                    return URL(params).readText()
+
                 } catch (e: MalformedURLException) {
                     Log.e(TAG, "downLodeXml :Invalid URL ${e.message}")
                 } catch (e: IOException) {
